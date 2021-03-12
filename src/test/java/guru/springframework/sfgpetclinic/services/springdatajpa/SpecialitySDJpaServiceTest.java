@@ -8,6 +8,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -18,6 +21,20 @@ class SpecialitySDJpaServiceTest {
 
     @InjectMocks
     SpecialitySDJpaService service;
+
+    @Test
+    void findByIdTest(){
+        // object that the mock is going to return back
+        Speciality speciality = new Speciality();
+        // when the specialRepository.findById(1L) call happens, then return an optional of the speciality object above
+        when(specialtyRepository.findById(1L)).thenReturn(Optional.of(speciality));
+        // making the method call on the class that is being tested
+        Speciality foundSpeciality = service.findById(1L);
+        // ensure that we are getting a speciality object back
+        assertThat(foundSpeciality).isNotNull();
+        // verify that the findById() method was called 1 time
+        verify(specialtyRepository).findById(1L);
+    }
 
     @Test
     void deleteById() {
