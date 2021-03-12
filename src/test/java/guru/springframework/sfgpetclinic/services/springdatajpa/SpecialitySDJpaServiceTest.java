@@ -11,6 +11,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -21,6 +22,8 @@ class SpecialitySDJpaServiceTest {
 
     @InjectMocks
     SpecialitySDJpaService service;
+
+
 
     @Test
     void testDeleteByObject() {
@@ -44,6 +47,19 @@ class SpecialitySDJpaServiceTest {
         assertThat(foundSpeciality).isNotNull();
         // verify that the findById() method was called 1 time
         verify(specialtyRepository).findById(1L);
+    }
+
+    // with BDD given
+    @Test
+    void findByIdBDDTest() {
+        Speciality speciality = new Speciality();
+
+        given(specialtyRepository.findById(1L)).willReturn(Optional.of(speciality));
+
+        Speciality foundSpeciality = service.findById(1L);
+        assertThat(foundSpeciality).isNotNull();
+        verify(specialtyRepository).findById(1L);
+
     }
 
     @Test
@@ -74,7 +90,6 @@ class SpecialitySDJpaServiceTest {
         //verify that it is never called with 5L
         verify(specialtyRepository, never()).deleteById(5l);
     }
-
 
 
     @Test
