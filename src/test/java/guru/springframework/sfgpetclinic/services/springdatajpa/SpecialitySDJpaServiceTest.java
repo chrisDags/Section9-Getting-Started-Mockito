@@ -12,6 +12,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -52,13 +53,21 @@ class SpecialitySDJpaServiceTest {
     // with BDD given
     @Test
     void findByIdBDDTest() {
-        Speciality speciality = new Speciality();
 
+        // given
+        Speciality speciality = new Speciality();
         given(specialtyRepository.findById(1L)).willReturn(Optional.of(speciality));
 
+        // when
         Speciality foundSpeciality = service.findById(1L);
+
+        //then
         assertThat(foundSpeciality).isNotNull();
-        verify(specialtyRepository).findById(1L);
+        // makes sure that the method was called once for any Long
+        then(specialtyRepository).should().findById(anyLong());
+        // makes sure that the specialityRepository has no further interactions
+        then(specialtyRepository).shouldHaveNoMoreInteractions();
+
 
     }
 
