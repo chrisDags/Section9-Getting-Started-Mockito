@@ -28,27 +28,30 @@ class SpecialitySDJpaServiceTest {
 
     @Test
     void testDeleteByObject() {
+
+        // given
         Speciality speciality = new Speciality();
 
+        //when
         service.delete(speciality);
 
-        verify(specialtyRepository).delete(any(Speciality.class));
-
+        //then
+        then(specialtyRepository).should().delete(any(Speciality.class));
     }
 
-    @Test
-    void findByIdTest(){
-        // object that the mock is going to return back
-        Speciality speciality = new Speciality();
-        // when the specialRepository.findById(1L) call happens, then return an optional of the speciality object above
-        when(specialtyRepository.findById(1L)).thenReturn(Optional.of(speciality));
-        // making the method call on the class that is being tested
-        Speciality foundSpeciality = service.findById(1L);
-        // ensure that we are getting a speciality object back
-        assertThat(foundSpeciality).isNotNull();
-        // verify that the findById() method was called 1 time
-        verify(specialtyRepository).findById(1L);
-    }
+//    @Test
+//    void findByIdTest(){
+//        // object that the mock is going to return back
+//        Speciality speciality = new Speciality();
+//        // when the specialRepository.findById(1L) call happens, then return an optional of the speciality object above
+//        when(specialtyRepository.findById(1L)).thenReturn(Optional.of(speciality));
+//        // making the method call on the class that is being tested
+//        Speciality foundSpeciality = service.findById(1L);
+//        // ensure that we are getting a speciality object back
+//        assertThat(foundSpeciality).isNotNull();
+//        // verify that the findById() method was called 1 time
+//        verify(specialtyRepository).findById(1L);
+//    }
 
     // with BDD given
     @Test
@@ -73,36 +76,62 @@ class SpecialitySDJpaServiceTest {
 
     @Test
     void deleteById() {
+
+        // given - none
+
+        //when
         service.deleteById(1l);
         service.deleteById(1l);
-        verify(specialtyRepository, times(2)).deleteById(1l);
+        //then
+        then(specialtyRepository).should(times((2))).deleteById(1L);
+//        verify(specialtyRepository, times(2)).deleteById(1l);
     }
 
     @Test
     void deleteByIdAtLeast() {
+
+        //given - none
+        //when
         service.deleteById(1l);
-        verify(specialtyRepository, atLeastOnce()).deleteById(1l);
+        //then
+        then(specialtyRepository).should(atLeastOnce()).deleteById(1L);
+//        verify(specialtyRepository, atLeastOnce()).deleteById(1l);
     }
 
     @Test
     void deleteByIdAtMost() {
+
+        //when
         service.deleteById(1l);
-        verify(specialtyRepository, atMost(1)).deleteById(1l);
+
+        //then
+        then(specialtyRepository).should(atMost(1)).deleteById(1L);
+//        verify(specialtyRepository, atMost(1)).deleteById(1l);
     }
 
     @Test
     void deleteByIdNever() {
+
+        //when
         service.deleteById(1l);
         service.deleteById(1l);
 
-        verify(specialtyRepository, atLeastOnce()).deleteById(1l);
+        //then
+        then(specialtyRepository).should(atLeastOnce()).deleteById(1L);
+//        verify(specialtyRepository, atLeastOnce()).deleteById(1l);
         //verify that it is never called with 5L
-        verify(specialtyRepository, never()).deleteById(5l);
+        then(specialtyRepository).should(never()).deleteById(5L);
+//        verify(specialtyRepository, never()).deleteById(5l);
     }
 
 
     @Test
     void testDelete() {
+        //when
         service.delete(new Speciality());
+
+        //then
+        then(specialtyRepository).should().delete(any());
+
     }
 }
